@@ -11,11 +11,16 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 app.use(express.static(path.join(__dirname, "public")));
-
+app.use(
+  express.urlencoded({
+    extended: true,
+  }),
+);
+app.use(express.json());
 console.log("Directory Path:", __dirname);
 
 app.use(morgan("combined"));
-
+// config for handlebars
 app.engine(".hbs", engine({ extname: ".hbs" }));
 app.set("view engine", ".hbs");
 app.set("views", path.join(__dirname, "resources/views"));
@@ -26,6 +31,15 @@ app.get("/", (req, res) => {
 
 app.get("/news", (req, res) => {
   res.render("news");
+});
+
+app.get("/search", (req, res) => {
+  res.render("search");
+});
+
+app.post("/search", (req, res) => {
+  console.log(req.body);
+  res.send("");
 });
 
 app.listen(port, () =>
